@@ -2,7 +2,7 @@
 .landing
   ul
     li(v-for="n, index in entries" v-bind:key="index")
-      | {{n.fields.title['en-US']}} {{n.sys.updatedAt | timeAgo}} ago
+      | {{n.fields.title['en-US']}} {{n.sys.createdAt | timeAgo}} ago
 </template>
 
 <script>

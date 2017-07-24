@@ -27,3 +27,4 @@ function pluralize (time, label) {
   }
   return time + label + 's'
 }
+

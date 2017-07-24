@@ -1,3 +1,9 @@
+import LRU from 'lru-cache'
+
+const cache = LRU({
+  max: 100,
+  maxAge: 1000 * 60 * 60
+})
 const contentful = require('contentful')
 const client = contentful.createClient({
   space: process.env.CONTENTFUL_SPACE,
@@ -6,39 +12,47 @@ const client = contentful.createClient({
 
 export default {
   entries({ commit, state }) {
-    const sync = state.token
-      ? { nextSyncToken: state.token}
-      : { initial: true }
-
-    return new Promise((resolve, reject) => {
-      client.sync(sync).then(response => {
-
-        if (sync['initial'] === true) {
+    if (cache.get('token') === undefined) {
+      return new Promise((resolve, reject) => {
+        client.sync({ initial: true }).then(response => {
+          cache.set('token', response.nextSyncToken)
+          cache.set('entries', response.entries)
           commit('ENTRIES', response.entries)
-        } else {
+          resolve()
+        })
+      }).catch(err => console.error(err))
 
-          // Get content added or changed since the last sync.
+    } else {
+      return new Promise((resolve, reject) => {
+        client.sync({ nextSyncToken: cache.get('token')}).then(response => {
+          cache.set('token', response.nextSyncToken)
+
+          const cachedEntries = cache.get('entries')
+
+           // Add new content
           if (response.entries.length > 0) {
-            const entries = !new Set(state.entries).add(iresponse.entries)
-            commit('ENTRIES', entries)
-          }
+            commit('ENTRIES', !new Set(cachedEntries).add(response.entries))
 
-          // Delete local content deleted since the last sync.
-          if (response.deletedEntries.length > 0) {
-            const ids = response.deletedEntries.map(id => {
-              return id.sys.id
+          // Remove any content that is marked as deleted
+          } else if (response.deletedEntries.length > 0) {
+
+            const ids = response.deletedEntries.map(d => {
+              return d.sys.id
             })
 
-            const entries = state.entries.filter(id =>
-              !new Set(ids).has(id.sys.id)
+            const entries = cachedEntries.filter(obj =>
+              !new Set(ids).has(obj.sys.id)
             )
             commit('ENTRIES', entries)
+          } else {
+            commit('ENTRIES', cachedEntries)
           }
-        }
-        commit('TOKEN', response.nextSyncToken)
-        resolve()
-      }).catch((err => console.error(err.message)))
-    })
+          resolve()
+
+        })
+      }).catch(err => console.error(err))
+    }
   }
 }
+
 

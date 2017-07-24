@@ -9,8 +9,7 @@ Vue.use(Vuex)
 export function createStore () {
   return new Vuex.Store({
     state: {
-      entries: '',
-      token: ''
+      entries: ''
     },
     actions,
     mutations,
