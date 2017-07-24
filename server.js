@@ -127,7 +127,7 @@ app.get('*', isProd ? render : (req, res) =>
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () =>
-  console.log(`server started at localhost:${port}`)
+  console.log(`server started at localhost:${PORT}`)
 )
 
 function cleanup() {
