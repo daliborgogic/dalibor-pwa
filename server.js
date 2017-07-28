@@ -73,6 +73,24 @@ const microCache = LRU({
 // headers.
 const isCacheable = req => useMicroCache
 
+const contentful = require('contentful')
+const client = contentful.createClient({
+  space: process.env.CONTENTFUL_SPACE,
+  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
+})
+
+async function writeJson (data) {
+  await new Promise((resolve, reject) => {
+    return fs.writeFile('data.json', JSON.stringify(data), 'utf-8', (err => {
+      if (err) reject(err)
+        if (!isProd) {
+          console.log(`Initial sync done!`)
+        }
+      resolve(data)
+    }))
+  })
+}
+
 function render (req, res) {
   const s = Date.now()
 
@@ -100,24 +118,28 @@ function render (req, res) {
     }
   }
 
-  const context = {
-    title: '###',
-    description: '####',
-    url: req.url
-  }
-
-  renderer.renderToString(context, (err, html) => {
-    if (err) {
-      return handleError(err)
+  fs.readFile('data.json', 'utf-8', (err, data) => {
+    const a = JSON.parse(data)
+    const context = {
+      title: '###',
+      description: '####',
+      url: req.url,
+      entries: a.entries
     }
-    res.end(html)
-    if (cacheable) {
-      microCache.set(req.url, html)
-    }
-    if (!isProd) {
-      console.log(`whole request: ${Date.now() - s}ms`)
-    }
+    renderer.renderToString(context, (err, html) => {
+      if (err) {
+        return handleError(err)
+      }
+      res.end(html)
+      if (cacheable) {
+        microCache.set(req.url, html)
+      }
+      if (!isProd) {
+        console.log(`whole request: ${Date.now() - s}ms`)
+      }
+    })
   })
+
 }
 
 app.get('*', isProd ? render : (req, res) =>
@@ -126,9 +148,11 @@ app.get('*', isProd ? render : (req, res) =>
 
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () =>
-  console.log(`server started at localhost:${PORT}`)
-)
+app.listen(PORT, () => {
+  const host = server.address().address;
+  const port = server.address().port
+  console.log('App listening at http://%s:%s', host, port)
+})
 
 function cleanup() {
   console.log(` Bye .`)
@@ -139,3 +163,4 @@ function cleanup() {
 process.on('SIGINT', cleanup)
 process.on('SIGTERM', cleanup)
 process.on('SIGHUP', cleanup)
+

@@ -18,10 +18,6 @@ export default {
     }
   },
 
-  asyncData ({ store }) {
-    return store.dispatch('entries')
-  },
-
   computed: {
     entries () {
       return this.$store.state.entries

@@ -12,6 +12,7 @@ export function createRouter () {
     scrollBehavior: () => ({ y: 0 }),
     routes: [
       { path: '/', component: LandingView },
+      { path: '/webhooks', component: NotFoundView },
       { path: '*', component: NotFoundView }
     ]
   })
