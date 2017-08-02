@@ -12,7 +12,7 @@ const serverMetaMixin = {
   created () {
     const meta = getMeta(this)
     if (meta) {
-      this.$ssrContext.title = `### ${'\u2014 ' + meta.title}`
+      this.$ssrContext.title = meta.title
       this.$ssrContext.description = meta.description
       this.$ssrContext.card = meta.card
     }
@@ -23,7 +23,7 @@ const clientMetaMixin = {
   mounted () {
     const meta = getMeta(this)
     if (meta) {
-      document.title = `### ${'\u2014 ' + meta.title}`
+      document.title = `Dalibor Gogic ${'\u2014 ' + meta.title}`
     }
   }
 }

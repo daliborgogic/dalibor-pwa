@@ -4,9 +4,19 @@ import { createStore } from '@/store'
 import { createRouter } from '@/router'
 import { sync } from 'vuex-router-sync'
 import metaMixin from '@/util/meta'
+import marked from 'marked'
 import * as filters from '@/util/filters'
 
+marked.setOptions({sanitize: true})
+
 Vue.mixin(metaMixin)
+Vue.mixin({
+  methods: {
+    marked (input) {
+      return marked(input)
+    }
+  }
+});
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {

@@ -5,6 +5,10 @@ export function host (url) {
   return parts.join('.')
 }
 
+export function markDown (input) {
+  return marked(input)
+}
+
 export function timeAgo (time) {
   const unix = new Date(time).getTime() / 1000
   const between = Date.now() / 1000 - Number(unix)

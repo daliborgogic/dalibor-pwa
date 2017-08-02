@@ -1,29 +1,36 @@
 <template lang="pug">
-.landing
-  ul
-    li(v-for="n, index in entries" v-bind:key="index")
-      | {{n.fields.title['en-US']}} {{n.sys.createdAt | timeAgo}} ago
+.home
+  .view
+    intro
+    about
+    services
+    router-link(to="/about") xxxx
 </template>
 
 <script>
-
+const Intro = () => import('@/components/Intro.vue')
+const About = () => import('@/components/About.vue')
+const Services = () => import('@/components/Services.vue')
 export default {
   name: 'landing-view',
 
-  meta () {
-    return {
-      title: 'Landing',
-      description: '###',
-      card: null
-    }
+  components: {
+    Intro,
+    About,
+    Services
   },
 
-  computed: {
-    entries () {
-      return this.$store.state.entries
+  meta () {
+    return {
+      title: 'Software/Cloud Engineering and Architecture',
+      description: '###',
+      card: null
     }
   }
 }
 </script>
 
-<style lang="stylus"></style>
+<style lang="stylus" scoped>
+.col
+  width 46%
+</style>

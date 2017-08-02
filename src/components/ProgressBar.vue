@@ -1,5 +1,3 @@
-<!-- borrowed from Nuxt! -->
-
 <template>
   <div class="progress" :style="{
     'width': percent+'%',
@@ -17,8 +15,8 @@ export default {
       show: false,
       canSuccess: true,
       duration: 3000,
-      height: '2px',
-      color: '#000000',
+      height: '1px',
+      color: '#bfbfbf',
       failedColor: '#ff0000',
     }
   },
@@ -87,16 +85,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.progress {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  height: 2px;
-  width: 0%;
-  transition: width 0.2s, opacity 0.4s;
-  opacity: 1;
-  background-color black
-  z-index: 999999;
-}
+.progress
+  position fixed
+  top 164px
+  left 0
+  right 0
+  width 0
+  transition width 10s, opacity 0.4s
+  opacity 1
+  z-index 999999
+
 </style>

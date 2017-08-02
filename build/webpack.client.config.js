@@ -1,3 +1,4 @@
+require('dotenv').config()
 const glob = require('glob')
 const path = require('path')
 const webpack = require('webpack')
@@ -23,9 +24,7 @@ const config = merge(base, {
     // strip dev-only code in Vue source
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      'process.env.VUE_ENV': '"client"',
-      'process.env.CONTENTFUL_SPACE': JSON.stringify(process.env.CONTENTFUL_SPACE),
-      'process.env.CONTENTFUL_ACCESS_TOKEN': JSON.stringify(process.env.CONTENTFUL_ACCESS_TOKEN)
+      'process.env.VUE_ENV': '"client"'
     }),
     // extract vendor chunks for better caching
     new webpack.optimize.CommonsChunkPlugin({
@@ -61,20 +60,16 @@ if (process.env.NODE_ENV === 'production') {
       staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
       runtimeCaching: [
         {
-          urlPattern: '/',
-          handler: 'networkFirst'
+          urlPattern: /^https:\/\/mnml\.one/,
+          handler: 'fastest'
         },
         {
-          urlPattern: /\/(top|new|show|ask|jobs)/,
-          handler: 'networkFirst'
+          urlPattern: /\/(about|notes)/,
+          handler: 'fastest'
         },
         {
-          urlPattern: '/item/:id',
-          handler: 'networkFirst'
-        },
-        {
-          urlPattern: '/user/:id',
-          handler: 'networkFirst'
+          urlPattern: '/notes/:note',
+          handler: 'fastest'
         }
       ]
     })

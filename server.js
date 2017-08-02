@@ -5,14 +5,34 @@ const express = require('express')
 const favicon = require('serve-favicon')
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
-
 const isProd = process.env.NODE_ENV === 'production'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'
-
+const bodyParser = require('body-parser')
+const remove = require('lodash.remove')
 const app = express()
-
 const template = fs.readFileSync(resolve('./src/index.template.html'), 'utf-8')
-//const contenfulSync = require ('./contentful')
+
+const webhookServer = require('./lib/webhook-server')({
+  username: process.env.CONTENTFUL_WEBHOOK_USERNAME,
+  password: process.env.CONTENTFUL_WEBHOOK_PASSWORD
+})
+
+const contentful = require('contentful')
+const client = contentful.createClient({
+  space: process.env.CONTENTFUL_SPACE,
+  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
+})
+
+client.sync({ initial: true })
+  .then(response => {
+    return new Promise((resolve, reject) => {
+      fs.writeFile('public/entries.json', JSON.stringify(response['entries']), (err, data) => {
+        if (err) reject(err)
+        else resolve(data)
+      })
+    })
+  })
+  .catch(err => console.log(err))
 
 function createRenderer (bundle, options) {
   // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
@@ -56,9 +76,10 @@ const serve = (path, cache) => express.static(resolve(path), {
 })
 
 app.use(favicon('./public/img/favicon.ico'))
-app.use('/dist', serve('./dist', true))
-app.use('/public', serve('./public', true))
+app.use('/dist', express.static('public'))
+app.use(express.static('public'))
 app.use('/service-worker.js', serve('./dist/service-worker.js'))
+app.use('/manifest.json', serve('./public/manifest.json'))
 
 // 1-second microcache.
 // https://www.nginx.com/blog/benefits-of-microcaching-nginx/
@@ -73,28 +94,10 @@ const microCache = LRU({
 // headers.
 const isCacheable = req => useMicroCache
 
-const contentful = require('contentful')
-const client = contentful.createClient({
-  space: process.env.CONTENTFUL_SPACE,
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
-})
-
-async function writeJson (data) {
-  await new Promise((resolve, reject) => {
-    return fs.writeFile('data.json', JSON.stringify(data), 'utf-8', (err => {
-      if (err) reject(err)
-        if (!isProd) {
-          console.log(`Initial sync done!`)
-        }
-      resolve(data)
-    }))
-  })
-}
-
 function render (req, res) {
   const s = Date.now()
 
-  res.setHeader("Content-Type", "text/html")
+  res.setHeader('Content-Type', 'text/html')
 
   const handleError = err => {
     if (err.url) {
@@ -118,14 +121,15 @@ function render (req, res) {
     }
   }
 
-  fs.readFile('data.json', 'utf-8', (err, data) => {
-    const a = JSON.parse(data)
+  fs.readFile('public/entries.json', 'utf-8', (err, data) => {
+    if (err) console.log(err)
     const context = {
       title: '###',
       description: '####',
-      url: req.url,
-      entries: a.entries
+      card: '###',
+      url: req.url
     }
+
     renderer.renderToString(context, (err, html) => {
       if (err) {
         return handleError(err)
@@ -139,22 +143,58 @@ function render (req, res) {
       }
     })
   })
-
 }
 
 app.get('*', isProd ? render : (req, res) =>
   readyPromise.then(() => render(req, res))
 )
 
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json({type: 'application/*'}))
+app.use('/', webhookServer.mountAsMiddleware)
+
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () => {
-  const host = server.address().address;
-  const port = server.address().port
-  console.log('App listening at http://%s:%s', host, port)
+app.listen(PORT, () =>
+  console.log(`App listening at *:${PORT}`)
+)
+
+function writeFile (file, obj) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(file, JSON.stringify(obj), 'utf-8', (err, data) => {
+      if (err) reject(err)
+      else resolve(data)
+    })
+  })
+}
+
+webhookServer.on('ContentManagement.Entry.publish', function (req) {
+  console.log('Published')
+  return new Promise((resolve, reject) => {
+    fs.readFile('public/entries.json', (err, data) => {
+      if (err) reject(err)
+      let obj = JSON.parse(data)
+      obj.push(req.body)
+      writeFile('public/entries.json', obj)
+      resolve(data)
+    })
+  })
 })
 
-function cleanup() {
+webhookServer.on('ContentManagement.Entry.unpublish', req => {
+  console.log('Unpublished')
+  return new Promise((resolve, reject) => {
+    fs.readFile('public/entries.json', (err, data) => {
+      if (err) reject(err)
+      let obj = JSON.parse(data)
+      remove(obj, e => e.sys.id === req.body.sys.id)
+      writeFile('public/entries.json', obj)
+      resolve(data)
+    })
+  })
+})
+
+function cleanup () {
   console.log(` Bye .`)
   process.exit(0)
 }
@@ -163,4 +203,3 @@ function cleanup() {
 process.on('SIGINT', cleanup)
 process.on('SIGTERM', cleanup)
 process.on('SIGHUP', cleanup)
-
