@@ -6,6 +6,7 @@
       router-link(:to="`/notes/${n.slug}`")
         h2 {{n.title}}
         p {{n.description}}
+        p {{n.slug}}
 </template>
 
 <script>

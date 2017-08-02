@@ -1,8 +1,8 @@
 <template lang="pug">
 .note.view
-  //- img(:src="note.card+'?w=600&fm=jpg&q=80'")
-  h1 {{note.title}}
-  .content(v-html="marked(note.content)")
+  //-img(:src="n.card+'?w=600&fm=jpg&q=80'")
+  h1 {{n.title}}
+  .content(v-html="marked(n.content)")
 
 </template>
 
@@ -12,15 +12,15 @@ export default {
 
   meta () {
     return {
-      title: this.note.title,
-      description: this.note.description,
-      card: this.note.card
+      // title: this.$store.state.note.title,
+      // description: this.$store.state.note.description,
+      // card: this.$store.state.note.card
     }
   },
 
   computed: {
-    note() {
-      return this.$store.state.note || []
+    n () {
+      return this.$store.state.note[0]
     }
   },
 

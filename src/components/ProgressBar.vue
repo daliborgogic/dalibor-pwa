@@ -16,7 +16,7 @@ export default {
       canSuccess: true,
       duration: 3000,
       height: '1px',
-      color: '#bfbfbf',
+      color: '#000000',
       failedColor: '#ff0000',
     }
   },
@@ -87,12 +87,11 @@ export default {
 <style lang="stylus" scoped>
 .progress
   position fixed
-  top 164px
+  top 64px
   left 0
   right 0
   width 0
-  transition width 10s, opacity 0.4s
+  transition width 250ms, opacity 0.4s
   opacity 1
   z-index 999999
-
 </style>

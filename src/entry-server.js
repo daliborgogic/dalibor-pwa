@@ -12,11 +12,14 @@ export default context => {
     const s = isDev && Date.now()
     const { app, router, store } = createApp()
 
-    const { url } = context
+    const { url} = context
     const fullPath = router.resolve(url).route.fullPath
 
     if (fullPath !== url) {
       reject({ url: fullPath })
+    }
+    if (context.notes) {
+      store.state.notes = context.notes
     }
     // set router's location
     router.push(url)

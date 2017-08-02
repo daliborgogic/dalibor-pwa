@@ -130,6 +130,23 @@ function render (req, res) {
       url: req.url
     }
 
+    let entries = JSON.parse(data)
+    let lang = 'en-US'
+
+    context.notes = entries.map(note => {
+      return  {
+        id: note.sys.id,
+        createdAt: note.sys.createdAt,
+        title:  note.fields.title[lang],
+        slug: note.fields.slug[lang],
+        description: note.fields.description[lang],
+        card: note.fields.card[lang].fields.file[lang].url,
+        content: note.fields.content[lang]
+      }
+    })
+
+    // console.log(context.notes)
+
     renderer.renderToString(context, (err, html) => {
       if (err) {
         return handleError(err)
