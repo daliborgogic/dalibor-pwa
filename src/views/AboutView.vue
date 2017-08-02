@@ -1,19 +1,21 @@
 <template lang="pug">
 .about.view
   h1 About
+  p I'm a Full-Stack Web Developer specializing in open web technologies and applications, Node.js, Express.js, evented architectures, HTML5, design, and UX.
 </template>
 
 <script>
 export default {
-  name: 'about-view'
+  name: 'about-view',
+  meta () {
+    return {
+      title: 'Software/Cloud Engineering and Architecture',
+      description: '###',
+      card: null
+    }
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
-h1
-  font-size 3rem
-  line-height .9
-  text-transform uppercase
-  word-break break-all
-  font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
 </style>

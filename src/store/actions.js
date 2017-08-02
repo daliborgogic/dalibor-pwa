@@ -4,10 +4,9 @@ export default {
     commit('NOTES', state['notes'])
   },
   note: ({commit, state}, {note}) => {
-    const n = state['notes'].filter(o => {
-      return o.slug === note
+    const notes = state['notes'].filter(_ => {
+      return _.slug === note
     })
-    const no = n.map(x => {return x })
-    commit('NOTE', no)
+    commit('NOTE', notes.map(note => { return note }))
   }
 }

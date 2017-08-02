@@ -3,10 +3,9 @@
   //- h1 Notes
   ul
     li(v-for="n in notes")
-      router-link(:to="`/notes/${n.slug}`")
+      router-link(:to="`/${n.slug}`")
         h2 {{n.title}}
         p {{n.description}}
-        p {{n.slug}}
 </template>
 
 <script>

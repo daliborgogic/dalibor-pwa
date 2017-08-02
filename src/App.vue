@@ -1,22 +1,11 @@
 <template lang="pug">
 #app
-  nav
-    div
-      router-link(to="/" exact v-if="this.$route.path === '/'")
-      button(v-else @click="back" role="button" aria-label="Prev")
-        svg(fill="#BD10E0" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg")
-          path(d="M0 0h24v24H0z" fill="none")
-          path(d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z")
-      router-link(to="/" exact) Home
-      router-link(to="/notes") Notes
-      router-link(to="/about") About
-    button(role="button" aria-label="###")
-      svg(fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg")
-        path(d="M0 0h24v24H0z" fill="none")
-        path(d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z")
-
-  transition(name="fade" mode="out-in")
-    router-view
+  nav(role="navigation")
+    router-link(to="/" exact) daliborgogic.com
+    router-link(to="/about" exact) About
+  main(role="main")
+    transition(name="fade" mode="out-in")
+      router-view
 </template>
 
 <script>
@@ -98,39 +87,12 @@ nav
   height 64px
   display flex
   align-items center
+  justify-content space-between
   padding 0 1rem
   z-index 2
-  svg
-    vertical-align middle
-  div
-    flex 1
-    display flex
-    align-items center
-  $a = 36px
   a
+    padding 0 1rem
     color lightness(black, 46%)
-  a:first-child
-  button:first-child
-  a:not(:first-child)
-    margin-right 2rem
-    text-decoration none
-    font-size 14px
-  a:first-child
-  button
-    width $a
-    height $a
-    display inline-block
-    border-radius 50%
-    border 1px solid lightness(black, 75%)
-    transition transform 250ms ease-in
-    &:active
-      transform scale(.9)
-  .router-link-active
-    color #bd10e0
-  button
-    padding 0
-    background-color transparent
-    cursor pointer
-    &:focus
-      outline none
+    &.router-link-active
+      color #bd10e0
 </style>

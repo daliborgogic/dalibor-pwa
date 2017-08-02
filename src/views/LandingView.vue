@@ -1,29 +1,39 @@
 <template lang="pug">
 .home
   .view
-    intro
-    about
+    dlbr-intro
+    dlbr-about
     .note
-      router-link(:to="`/notes/${n.slug}`")
-        img(:src="n.card")
+      header
+        span Recent Posts
+        button(role="button") View All Posts
+      router-link(:to="`/${n.slug}`")
+        //-img(:src="n.card")
         h2 {{n.title}}
         p
          time(:date-time="n.createdAt") {{n.createdAt | timeAgo}} ago
         p {{n.description}}...
-    services
+    .note
+      header
+        span Events &amp; Conferences
+        button(role="button") View All Talks
+      router-link(:to="`/${n.slug}`")
+        //-img(:src="n.card")
+        h2 {{n.title}}
+        p
+         time(:date-time="n.createdAt") {{n.createdAt | timeAgo}} ago
+        p {{n.description}}...
 </template>
 
 <script>
-const Intro = () => import('@/components/Intro.vue')
-const About = () => import('@/components/About.vue')
-const Services = () => import('@/components/Services.vue')
+const DlbrIntro = () => import(/* webpackChunkName: "dlbr-intro" */ '@/components/Intro.vue')
+const DlbrAbout = () => import(/* webpackChunkName: "dlbr-about" */ '@/components/About.vue')
 export default {
   name: 'landing-view',
 
   components: {
-    Intro,
-    About,
-    Services
+    DlbrIntro,
+    DlbrAbout
   },
 
   meta () {
@@ -46,10 +56,24 @@ export default {
 time
   font-size 13px
   color lightness(black, 46%)
-.note img
-  padding-bottom 1rem
-  width 100%
-  vertical-align middle
+.note
+  padding-bottom 3rem
+.note header
+  height 56px
+  display flex
+  align-items center
+  margin-bottom 1rem
+  font-size 13px
+  color lightness(black, 46%)
+  button
+    margin-left auto
+    border none
+    background-color transparent
+    font-size 14px
+    text-transform uppercase
+    font-weight 700
+    height 36px
+    color #bd10e0
 ul
   padding-left 0
   list-style none

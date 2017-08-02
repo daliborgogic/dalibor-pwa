@@ -3,11 +3,22 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const LandingView = () => import('@/views/LandingView.vue')
-const AboutView = () => import('@/views/AboutView.vue')
-const NotFoundView = () => import('@/views/NotFoundView.vue')
-const NotesView = () => import('@/views/NotesView.vue')
-const NoteView = () => import('@/views/NoteView.vue')
+const LandingView = () => import(
+  /* webpackChunkName: "landing-view" */
+  '@/views/LandingView.vue'
+)
+const AboutView = () => import(
+  /* webpackChunkName: "about-view" */
+  '@/views/AboutView.vue'
+)
+const NotFoundView = () => import(
+  /* webpackChunkName: "404-view" */
+  '@/views/NotFoundView.vue'
+)
+const NoteView = () => import(
+  /* webpackChunkName: "note-view" */
+  '@/views/NoteView.vue'
+)
 
 export function createRouter () {
   return new Router({
@@ -15,9 +26,8 @@ export function createRouter () {
     scrollBehavior: () => ({ y: 0 }),
     routes: [
       { path: '/', component: LandingView },
-      { path: '/notes', component: NotesView },
-      { path: '/notes/:note', component: NoteView },
       { path: '/about', component: AboutView },
+      { path: '/:note?', component: NoteView },
       { path: '*', component: NotFoundView }
     ]
   })
