@@ -23,7 +23,6 @@ const NoteView = () => import(
 export function createRouter () {
   return new Router({
     mode: 'history',
-    scrollBehavior: () => ({ y: 0 }),
     routes: [
       { path: '/', component: LandingView },
       { path: '/about', component: AboutView },

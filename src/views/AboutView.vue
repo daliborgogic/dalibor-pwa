@@ -7,12 +7,17 @@
 <script>
 export default {
   name: 'about-view',
+
   meta () {
     return {
-      title: 'Software/Cloud Engineering and Architecture',
+      title: 'About',
       description: '###',
       card: null
     }
+  },
+
+  asyncData ({ store}) {
+    return store.dispatch('title', 'About')
   }
 }
 </script>

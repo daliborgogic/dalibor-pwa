@@ -1,39 +1,39 @@
 <template lang="pug">
 .home
-  .view
-    dlbr-intro
-    dlbr-about
-    .note
-      header
-        span Recent Posts
-        button(role="button") View All Posts
-      router-link(:to="`/${n.slug}`")
-        //-img(:src="n.card")
-        h2 {{n.title}}
-        p
-         time(:date-time="n.createdAt") {{n.createdAt | timeAgo}} ago
-        p {{n.description}}...
-    .note
-      header
-        span Events &amp; Conferences
-        button(role="button") View All Talks
-      router-link(:to="`/${n.slug}`")
-        //-img(:src="n.card")
-        h2 {{n.title}}
-        p
-         time(:date-time="n.createdAt") {{n.createdAt | timeAgo}} ago
-        p {{n.description}}...
+  .split
+    div
+      app-intro
+      app-open-positions
+    div
+      app-card
+      ul
+        li(v-for="n, index in notes")
+          router-link(:to="`/${n.slug}`")
+            //- img(v-if="index === 1" :src="n.card")
+            h2 {{n.title}}
+            time(:date-time="n.createdAt") {{n.createdAt | timeAgo}} ago
+      a(href="https://m.do.co/c/1fa2d6923364" rel="noopener, nofollow")
+        icon-digital-ocean
+      a(href="https://www.contentful.com" rel="noopener, nofollow")
+        icon-contentful
+
 </template>
 
 <script>
-const DlbrIntro = () => import(/* webpackChunkName: "dlbr-intro" */ '@/components/Intro.vue')
-const DlbrAbout = () => import(/* webpackChunkName: "dlbr-about" */ '@/components/About.vue')
+const AppIntro = () => import(/* webpackChunkName: "dlbr-intro" */ '@/components/Intro.vue')
+const AppCard = () => import(/* webpackChunkName: "dlbr-card" */ '@/components/Card.vue')
+const AppOpenPositions = () => import(/* webpackChunkName: "dlbr-positions" */ '@/components/OpenPositions.vue')
+const IconDigitalOcean = () => import(/* webpackChunkName: "dlbr-footer" */ '@/components/icons/DigitalOcean.vue')
+const IconContentful = () => import(/* webpackChunkName: "dlbr-footer" */ '@/components/icons/Contentful.vue')
 export default {
   name: 'landing-view',
 
   components: {
-    DlbrIntro,
-    DlbrAbout
+    AppIntro,
+    AppCard,
+    AppOpenPositions,
+    IconDigitalOcean,
+    IconContentful
   },
 
   meta () {
@@ -44,15 +44,25 @@ export default {
     }
   },
   computed: {
-    n() {
+    notes () {
       const notes = this.$store.state.notes
-      return notes[0]
+      return notes
     }
   }
 }
 </script>
 
 <style lang="stylus">
+.home
+  padding-top 10%
+.split
+  max-width 1120px
+  margin 0 auto
+  display flex
+  justify-content space-between
+  & > div
+    width calc(50% - 3rem)
+    // border 1px solid tomato
 time
   font-size 13px
   color lightness(black, 46%)
@@ -74,21 +84,30 @@ time
     font-weight 700
     height 36px
     color #bd10e0
-ul
-  padding-left 0
-  list-style none
-li
-  min-height 48px
-  padding-bottom 3rem
-a
-  text-decoration none
-  color black
-  h2
-    line-height .9
-    font-size 2rem
-    text-transform uppercase
-    display inline
-    //word-break break-all
-    color #bd10e0//#49fb35
-    //font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
+.home
+  ul
+    padding-left 0
+    margin-top 0
+    margin-bottom 6rem
+    list-style none
+  li
+    margin-bottom 1rem
+    //border 1px solid lightness(black, 74%)
+    // border-radius 2px
+    // box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    a
+      text-decoration none
+      display flex
+      align-items baseline
+      h2
+        flex 1
+        margin-top 0
+        line-height 1
+        font-size 18px // rem?
+        font-weight 500
+        // text-transform uppercase
+        word-break break-all
+        color #bd10e0//#49fb35
+        padding-right 1rem
+        //font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
 </style>

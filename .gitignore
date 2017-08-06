@@ -3,3 +3,6 @@ dist/
 npm-debug.log
 .env
 data.json
+public/entries.json
+*.sublime-project
+*.sublime-workspace

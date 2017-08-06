@@ -2,13 +2,24 @@
 .note.view
   //- img(:src="n.card+'?w=600&fm=jpg&q=80'")
   h1 {{post.title}}
+  time(:date-time="post.createdAt") {{post.createdAt | timeAgo}} ago
+
   .content(v-html="marked(post.content)")
+
+  a(:href="share" rel="nofollow, noopener") SHARE
+
+  app-about
 
 </template>
 
 <script>
+const AppAbout = () => import(/* webpackChunkName: "dlbr-about" */ '@/components/About.vue')
 export default {
   name: 'note-view',
+
+  components: {
+    AppAbout
+  },
 
   meta () {
     return {
@@ -21,25 +32,48 @@ export default {
   computed: {
     post () {
       return this.$store.state.note[0]
+    },
+
+    share: {
+      get: function () {
+        const tweet = {
+          text: this.post.title,
+          url: this.$route.fullPath
+        }
+        // ToDo update when have category
+        if (!this.post.title) {
+          tweet.hashtags = `&hashtags=${this.post.categories}`
+        } else {
+          tweet.hashtags = ''
+        }
+        return `http://twitter.com/share?text=${tweet.text}&url=https://daliborgogic.com${tweet.url + tweet.hashtags}`
+      },
+      set: function (val) {
+        return val
+
+      }
     }
   },
 
   asyncData ({ store, route: {params: {note}} }) {
     return store.dispatch('note', {note})
+  },
+
+  methods: {
+    share () {
+      //
+      console.log('click')
+    }
   }
 
 }
 </script>
 
 <style lang="stylus">
-h1
-  font-size 3rem
-  line-height .9
-  text-transform uppercase
-  word-break break-all
-  font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
-.content ul
-  padding-left 0
+.content
+  padding-bottom 3rem
+  ul
+    padding-left 0
   // list-style none
 img
   max-width calc(100% + 6rem)
@@ -48,4 +82,15 @@ img
   vertical-align middle
   // margin-left -3rem
   // margin-right -3rem
+pre
+  margin-top 3rem
+  margin-bottom 3rem
+  // margin-left -10rem
+  // margin-right -10rem
+  // width calc(100% + 20rem)
+  font-size .75rem
+  //white-space pre-wrap
+  word-break break-word
+  overflow-x auto
+
 </style>

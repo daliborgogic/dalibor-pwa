@@ -8,7 +8,6 @@ const { createBundleRenderer } = require('vue-server-renderer')
 const isProd = process.env.NODE_ENV === 'production'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'
 const bodyParser = require('body-parser')
-const remove = require('lodash.remove')
 const app = express()
 const template = fs.readFileSync(resolve('./src/index.template.html'), 'utf-8')
 

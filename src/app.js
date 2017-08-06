@@ -7,7 +7,9 @@ import metaMixin from '@/util/meta'
 import marked from 'marked'
 import * as filters from '@/util/filters'
 
-marked.setOptions({sanitize: true})
+// marked.setOptions({
+//   sanitize: true
+// })
 
 Vue.mixin(metaMixin)
 Vue.mixin({

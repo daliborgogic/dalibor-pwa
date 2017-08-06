@@ -1,22 +1,42 @@
 <template lang="pug">
 #app
   nav(role="navigation")
-    router-link(to="/" exact) daliborgogic.com
-    router-link(to="/about" exact) About
+    router-link(v-if="this.$route.path === '/'" to="/" exact) daliborgogic.com
+    div(v-else)
+      svg(@click="back" fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg")
+        path(d="M0 0h24v24H0z" fill="none")
+        path(d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z")
+      span {{ title }}
+    router-link(to="/about") About
   main(role="main")
-    transition(name="fade" mode="out-in")
+    transition(name="fade" mode="out-in"  appear, @after-leave="afterLeave")
       router-view
+  app-footer
 </template>
 
 <script>
+const AppFooter = () => import(/* webpackChunkName: "dlbr-footer" */ '@/components/Footer.vue')
 export default {
+  components: {
+    AppFooter
+  },
+
   methods: {
+    afterLeave (el) {
+      window.scroll(0, 0)
+    },
     back () {
       this.$router.go(-1)
     }
   },
+
+  computed: {
+    title () {
+      return this.$store.state.title
+    }
+  },
   mounted () {
-    //[...document.all].map((A,B)=>A.style.outline=`1px solid hsl(${B*B},99%,50%`)
+    //[...document.all].map(A=>A.style.outline=`1px solid hsl(${(A+A).length*9},99%,50%`)
   }
 }
 </script>
@@ -54,6 +74,7 @@ body
   color lightness(black, 13%)
   background-color white
   margin 0
+  padding-top 64px
   overflow-y scroll
 
 p
@@ -90,9 +111,30 @@ nav
   justify-content space-between
   padding 0 1rem
   z-index 2
+  div
+    display flex
+    align-items center
+    span
+      padding-left 1rem
+      font-size 18px
+      font-weight 500
   a
     padding 0 1rem
     color lightness(black, 46%)
+    text-decoration none
+    font-size 14px
     &.router-link-active
       color #bd10e0
+.icon
+  height 48px
+  width auto
+  display inline-block
+h1
+  font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
+  margin-top 0
+  margin-bottom 6rem
+  line-height .9
+  font-size 5.3em
+  word-break break-all
+  text-transform uppercase
 </style>

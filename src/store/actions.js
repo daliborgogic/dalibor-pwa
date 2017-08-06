@@ -8,5 +8,9 @@ export default {
       return _.slug === note
     })
     commit('NOTE', notes.map(note => { return note }))
+    commit('TITLE', state.note[0].title)
+  },
+  title: ({commit, state}, title) => {
+    commit('TITLE', title)
   }
 }
