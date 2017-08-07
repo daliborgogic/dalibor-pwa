@@ -1,6 +1,6 @@
 <template lang="pug">
 .positions
-  h3 Open positions
+  h2.h2 Open positions
   p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore nihil itaque adipisci modi eveniet eius voluptates iusto sint, id doloribus.
   ul
     li Accessibility
@@ -11,10 +11,11 @@
     li Frontend engineering
     li UX and UI design
     li Security
+  .right
+    a.button(href="mailto:mail@daliborgogic.com?subject=Foo") Apply
 </template>
 
-<script>
-export default {
-  name: 'comp-positions'
-}
-</script>
+<style lang="stylus">
+.positions
+  padding-bottom 6rem
+</style>

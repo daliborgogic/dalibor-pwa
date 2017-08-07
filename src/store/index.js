@@ -12,7 +12,8 @@ export function createStore () {
     state: {
       notes: '',
       note: '',
-      title: ''
+      title: '',
+      tag: ''
     },
     actions,
     mutations,

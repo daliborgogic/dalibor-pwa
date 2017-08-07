@@ -1,8 +1,5 @@
-export function host (url) {
-  const host = url.replace(/^https?:\/\//, '').replace(/\/.*$/, '')
-  const parts = host.split('.').slice(-3)
-  if (parts[0] === 'www') parts.shift()
-  return parts.join('.')
+export function camelize (str) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 export function markDown (input) {
@@ -31,4 +28,3 @@ function pluralize (time, label) {
   }
   return time + label + 's'
 }
-

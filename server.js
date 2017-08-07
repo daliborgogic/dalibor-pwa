@@ -75,8 +75,8 @@ const serve = (path, cache) => express.static(resolve(path), {
 })
 
 app.use(favicon('./public/img/favicon.ico'))
-app.use('/dist', express.static('public'))
 app.use(express.static('public'))
+app.use('/dist', express.static('dist'))
 app.use('/service-worker.js', serve('./dist/service-worker.js'))
 app.use('/manifest.json', serve('./public/manifest.json'))
 
@@ -139,6 +139,7 @@ function render (req, res) {
         title:  note.fields.title[lang],
         slug: note.fields.slug[lang],
         description: note.fields.description[lang],
+        category: note.fields.category[lang],
         card: note.fields.card[lang].fields.file[lang].url,
         content: note.fields.content[lang]
       }

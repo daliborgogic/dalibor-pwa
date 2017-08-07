@@ -1,9 +1,10 @@
 <template lang="pug">
 .c-about
-  img(src="foo.jpg")
+  //- img(src="foo.jpg" alt="Dalibor Gogic")
   div
     h3 Dalibor Gogic
-    p Web Developer specializing in open web technologies and applications, Node.js, Express.js, evented architectures, HTML5, design, and UX.
+    p Web Developer specializing
+
 </template>
 
 <script>
@@ -17,9 +18,10 @@ export default {
   padding-bottom 6rem
   display flex
   p
-    font-size 1rem
+    font-size 13px
     margin-top 0
   h3
+    font-size 14px
     margin-top 0
     margin-bottom 0
   img

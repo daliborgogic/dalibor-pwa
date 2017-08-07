@@ -1,16 +1,17 @@
 <template lang="pug">
 #app
-  nav(role="navigation")
-    router-link(v-if="this.$route.path === '/'" to="/" exact) daliborgogic.com
-    div(v-else)
-      svg(@click="back" fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg")
+  nav
+    div
+      svg(@click="back" fill="#BD10E0" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg")
         path(d="M0 0h24v24H0z" fill="none")
-        path(d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z")
-      span {{ title }}
-    router-link(to="/about") About
-  main(role="main")
+        path(v-if="this.$route.path !== '/'" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z")
+      router-link( to="/" exact) daliborgogic.com
+    div
+      router-link(to="/notes") Notes
+      router-link(to="/about") About
+  main
     transition(name="fade" mode="out-in"  appear, @after-leave="afterLeave")
-      router-view
+      router-view.view
   app-footer
 </template>
 
@@ -27,12 +28,6 @@ export default {
     },
     back () {
       this.$router.go(-1)
-    }
-  },
-
-  computed: {
-    title () {
-      return this.$store.state.title
     }
   },
   mounted () {
@@ -109,7 +104,7 @@ nav
   display flex
   align-items center
   justify-content space-between
-  padding 0 1rem
+  padding 0 2rem 0 1rem
   z-index 2
   div
     display flex
@@ -126,15 +121,43 @@ nav
     &.router-link-active
       color #bd10e0
 .icon
-  height 48px
+  height 38px
   width auto
   display inline-block
 h1
+.h2
   font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
   margin-top 0
-  margin-bottom 6rem
   line-height .9
-  font-size 5.3em
   word-break break-all
   text-transform uppercase
+h1
+  font-size 5.3em
+  margin-bottom 6rem
+.h2
+  font-family -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
+  text-transform inherit
+  font-size 1rem
+  margin-bottom 1rem
+@media (max-width: 512px)
+  .view
+    margin-top 1rem
+    padding-left 1rem
+    padding-right 1rem
+  nav
+    div
+      width 100%
+    a:last-of-type
+      position absolute
+      right 0
+      background-color white
+    a:first-of-type
+      padding-left 0
+  h1
+    font-size 13.8vw
+  ul
+    li
+      list-style-position: inside;
+      text-indent: -1.4rem;
+      padding-left: 1.5rem
 </style>

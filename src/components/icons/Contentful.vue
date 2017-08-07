@@ -6,12 +6,3 @@ svg.icon(width="256px" height="289px" viewBox="0 0 256 289" version="1.1" xmlns=
   ellipse(cx="64.8247287" cy="64.8247287" rx="31.5120209" ry="31.5120209" fill="#707070")
   ellipse(cx="64.8247287" cy="223.285177" rx="31.5120209" ry="31.5120209" fill="#707070")
 </template>
-
-<script>
-export default {
-  name: 'contentful'
-}
-</script>
-
-<style lang="stylus" scoped>
-</style>

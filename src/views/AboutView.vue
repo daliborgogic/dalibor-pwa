@@ -1,7 +1,7 @@
 <template lang="pug">
-.about.view
+.about
   h1 About
-  p I'm a Full-Stack Web Developer specializing in open web technologies and applications, Node.js, Express.js, evented architectures, HTML5, design, and UX.
+  p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam iure, non, culpa totam reiciendis sunt tenetur explicabo aperiam voluptatum sed ipsam neque iusto! Accusamus debitis, culpa! Esse provident numquam rem magni reprehenderit vel deserunt quod totam ipsum at id vero laborum deleniti, dignissimos, voluptatum repudiandae illum placeat veniam aut vitae tempore! Cum non dignissimos maxime unde eligendi, odit nesciunt omnis minima sapiente, necessitatibus, nostrum molestias porro. Cumque deserunt minima quam mollitia nam, nulla, eveniet accusantium, sequi itaque consequuntur, et eligendi. Odit neque aliquid dolor necessitatibus aspernatur aperiam temporibus, in enim ducimus, dolorum inventore nostrum deleniti nisi error! Ab, ullam dolorum!
 </template>
 
 <script>
@@ -14,13 +14,6 @@ export default {
       description: '###',
       card: null
     }
-  },
-
-  asyncData ({ store}) {
-    return store.dispatch('title', 'About')
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-</style>

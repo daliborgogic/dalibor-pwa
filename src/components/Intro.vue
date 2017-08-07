@@ -1,5 +1,23 @@
 <template lang="pug">
-div
+.intro
   h1 SOFTWARE/CLOUD ENGINEERING AND ARCHITECTURE*
-  small * Minification (also minimisation or minimization), in computer programming languages and especially JavaScript, is the process of removing all unnecessary characters from source code without changing its functionality.
 </template>
+
+<script>
+export default {
+  name: 'intro'
+}
+</script>
+
+<style lang="stylus">
+.intro
+  padding-bottom 6rem
+  h1
+    cursor pointer
+  span
+    color #bd10e0
+    cursor pointer
+    transition transform 250ms ease-in
+    &:active
+      transform scale(.9)
+</style>

@@ -20,13 +20,25 @@ const NoteView = () => import(
   '@/views/NoteView.vue'
 )
 
+const NotesView = () => import(
+  /* webpackChunkName: "notes-view" */
+  '@/views/NotesView.vue'
+)
+
+const TagView = () => import(
+  /* webpackChunkName: "tag-view" */
+  '@/views/TagView.vue'
+)
+
 export function createRouter () {
   return new Router({
     mode: 'history',
     routes: [
       { path: '/', component: LandingView },
       { path: '/about', component: AboutView },
-      { path: '/:note?', component: NoteView },
+      { path: '/notes', component: NotesView },
+      { path: '/notes/:note?', component: NoteView },
+      { path: '/tags/:tag?', component: TagView },
       { path: '*', component: NotFoundView }
     ]
   })

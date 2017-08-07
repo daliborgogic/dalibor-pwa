@@ -1,24 +1,33 @@
 <template lang="pug">
-.note.view
+.note
   //- img(:src="n.card+'?w=600&fm=jpg&q=80'")
   h1 {{post.title}}
   time(:date-time="post.createdAt") {{post.createdAt | timeAgo}} ago
-
-  .content(v-html="marked(post.content)")
-
-  a(:href="share" rel="nofollow, noopener") SHARE
-
+  .content(v-html="post.content")
+  .category
+    router-link(:to="'/tags/'+post.category") {{post.category | camelize}}
+  .share
+    a(:href="share" rel="nofollow, noopener" aria-label="Share on Twitter")
+      icon-twitter
   app-about
 
 </template>
 
 <script>
-const AppAbout = () => import(/* webpackChunkName: "dlbr-about" */ '@/components/About.vue')
+const AppAbout = () => import(/* webpackChunkName: "dlbr-note" */ '@/components/About.vue')
+const IconTwitter = () => import(/* webpackChunkName: "dlbr-note" */ '@/components/icons/Twitter.vue')
 export default {
   name: 'note-view',
 
+  data () {
+    return {
+      test: '<div>a</div>'
+    }
+  },
+
   components: {
-    AppAbout
+    AppAbout,
+    IconTwitter
   },
 
   meta () {
@@ -41,8 +50,8 @@ export default {
           url: this.$route.fullPath
         }
         // ToDo update when have category
-        if (!this.post.title) {
-          tweet.hashtags = `&hashtags=${this.post.categories}`
+        if (this.post.category) {
+          tweet.hashtags = `&hashtags=${this.post.category}`
         } else {
           tweet.hashtags = ''
         }
@@ -57,19 +66,33 @@ export default {
 
   asyncData ({ store, route: {params: {note}} }) {
     return store.dispatch('note', {note})
-  },
-
-  methods: {
-    share () {
-      //
-      console.log('click')
-    }
   }
 
 }
 </script>
 
 <style lang="stylus">
+.category
+  padding-bottom 3rem
+  a
+    height 32px
+    min-width 64px
+    padding 0 1rem
+    border 1px solid lightness(black, 87%)
+    background-color transparent
+    border-radius 2px
+    font-size 14px
+    text-decoration none
+    line-height 30px
+    display inline-block
+    transition transform 250ms ease-in
+    &:focus
+      transform scale(.9)
+
+time
+  padding-bottom 1rem
+  display block
+  font-size 13px
 .content
   padding-bottom 3rem
   ul
@@ -92,5 +115,9 @@ pre
   //white-space pre-wrap
   word-break break-word
   overflow-x auto
-
+.share
+  display flex
+  padding-bottom 3rem
+  a
+    margin-left auto
 </style>
