@@ -10,6 +10,7 @@ export function createStore () {
   return new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     state: {
+      latests: '',
       notes: '',
       note: '',
       title: '',

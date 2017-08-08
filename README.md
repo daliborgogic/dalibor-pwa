@@ -6,6 +6,7 @@
 # install dependencies
 $ npm i
 
+# create .env file
 $ cat > .env << EOL
 CONTENTFUL_SPACE=
 CONTENTFUL_ACCESS_TOKEN=

@@ -10,6 +10,8 @@ const isProd = process.env.NODE_ENV === 'production'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'
 const bodyParser = require('body-parser')
 const app = express()
+const server = require('http').Server(app);
+var io = require('socket.io')(server);
 const template = fs.readFileSync(resolve('./src/index.template.html'), 'utf-8')
 
 const webhookServer = require('./lib/webhook-server')({
@@ -144,21 +146,19 @@ function render (req, res) {
 
 }
 
-app.get('/api/home', (req, res) => {
-
+app.get('/api/posts/latests', (req, res) => {
   return fs.readFile('public/entries.json', 'utf-8', (err, data) => {
     if (err) console.log(err)
-      const entries = JSON.parse(data)
-      const home = entries.map(note => {
-        return {
-          title: note.fields.title['en-US'],
-          slug: note.fields.slug['en-US'],
-          createdAt: note.sys.createdAt
-        }
-      })
-      res.json(home)
+    const entries = JSON.parse(data)
+    const home = entries.map(note => {
+      return {
+        title: note.fields.title['en-US'],
+        slug: note.fields.slug['en-US'],
+        createdAt: note.sys.createdAt
+      }
+    })
+    res.json(home)
   })
-
 })
 
 app.get('*', isProd ? render : (req, res) =>
@@ -171,9 +171,7 @@ app.use('/', webhookServer.mountAsMiddleware)
 
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () =>
-  console.log(`App listening at *:${PORT}`)
-)
+server.listen(PORT, () => console.log(`App listening at *:${PORT}`))
 
 function writeFile (file, obj) {
   return new Promise((resolve, reject) => {
@@ -219,3 +217,11 @@ function cleanup () {
 process.on('SIGINT', cleanup)
 process.on('SIGTERM', cleanup)
 process.on('SIGHUP', cleanup)
+
+
+io.on('connection', socket => {
+  socket.emit('server', { msg: 'ping' })
+  socket.on('client', data => {
+    console.log(data)
+  })
+})

@@ -2,12 +2,11 @@ import marked from 'marked'
 import fetch from 'isomorphic-fetch'
 
 export default {
-  notes: ({context, commit, state}) => {
-    return fetch('http://localhost:5000/api/home')
+  latests: ({context, commit, state}) => {
+    return fetch('http://localhost:5000/api/posts/latests')
       .then(res => { return res.json() })
-      .then(home => {
-        console.log(home)
-        commit('NOTES', home)
+      .then(latests => {
+        commit('LATESTS', latests)
       })
       .catch(err => console.error(err))
   },

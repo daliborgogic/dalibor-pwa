@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
 const AppFooter = () => import(/* webpackChunkName: "dlbr-footer" */ '@/components/Footer.vue')
 export default {
   components: {
@@ -32,6 +33,11 @@ export default {
   },
   mounted () {
     //[...document.all].map(A=>A.style.outline=`1px solid hsl(${(A+A).length*9},99%,50%`)
+    const socket = io.connect('http://localhost:5000')
+      socket.on('server', data => {
+        console.log(data)
+        socket.emit('client', { msg: 'pong' })
+    });
   }
 }
 </script>

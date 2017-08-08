@@ -4,9 +4,9 @@
     app-intro
   app-card
   app-services
-  h3.h2 Lates posts
+  h3.h2 Latest posts
   ul.list-notes
-    li(v-for="n, index in notes")
+    li(v-for="n, index in latests")
       router-link(:to="'/notes/'+n.slug")
         //- img(v-if="index === 1" :src="n.card")
         h3 {{n.title}}
@@ -40,8 +40,8 @@ export default {
     }
   },
   computed: {
-    notes () {
-      const notes = this.$store.state.notes
+    latests () {
+      const notes = this.$store.state.latests
       return notes
     }
   },
@@ -54,7 +54,7 @@ export default {
     }
   },
   asyncData ({ store }) {
-    return store.dispatch('notes')
+    return store.dispatch('latests')
   }
 }
 </script>
