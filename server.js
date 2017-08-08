@@ -1,3 +1,4 @@
+'use strict'
 const fs = require('fs')
 const path = require('path')
 const LRU = require('lru-cache')
@@ -110,6 +111,7 @@ function render (req, res) {
   }
 
   const cacheable = isCacheable(req)
+
   if (cacheable) {
     const hit = microCache.get(req.url)
     if (hit) {
@@ -120,32 +122,25 @@ function render (req, res) {
     }
   }
 
+  const context = {
+    title: '###',
+    description: '####',
+    card: '###',
+    url: req.url
+  }
 
-
-    const context = {
-      title: '###',
-      description: '####',
-      card: '###',
-      url: req.url
+  renderer.renderToString(context, (err, html) => {
+    if (err) {
+      return handleError(err)
     }
-
-
-
-
-    // console.log(context.notes)
-
-    renderer.renderToString(context, (err, html) => {
-      if (err) {
-        return handleError(err)
-      }
-      res.end(html)
-      if (cacheable) {
-        microCache.set(req.url, html)
-      }
-      if (!isProd) {
-        console.log(`whole request: ${Date.now() - s}ms`)
-      }
-    })
+    res.end(html)
+    if (cacheable) {
+      microCache.set(req.url, html)
+    }
+    if (!isProd) {
+      console.log(`whole request: ${Date.now() - s}ms`)
+    }
+  })
 
 }
 
