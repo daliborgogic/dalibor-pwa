@@ -22,6 +22,14 @@ $ npm run build
 
 # serve in production mode
 $ npm start
+
+# Webhooks
+# To test locally run:
+$ curl -X POST \
+  -u username:password \
+  --header "X-Contentful-Topic: ContentManagement.Entry.publish" \
+  --data "test=data" \
+  localhost:5000
 ```
 
 ### License

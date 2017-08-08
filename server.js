@@ -182,8 +182,12 @@ function writeFile (file, obj) {
   })
 }
 
-webhookServer.on('ContentManagement.Entry.publish', function (req) {
-  console.log('Published')
+const EventEmitter = require('events').EventEmitter
+const eventEmitter = new EventEmitter()
+
+
+
+webhookServer.on('ContentManagement.Entry.publish', (req => {
   return new Promise((resolve, reject) => {
     fs.readFile('public/entries.json', (err, data) => {
       if (err) reject(err)
@@ -193,10 +197,10 @@ webhookServer.on('ContentManagement.Entry.publish', function (req) {
       resolve(data)
     })
   })
-})
+  eventEmitter.emit('published', req.body)
+}))
 
-webhookServer.on('ContentManagement.Entry.unpublish', req => {
-  console.log('Unpublished')
+webhookServer.on('ContentManagement.Entry.unpublish', (req => {
   return new Promise((resolve, reject) => {
     fs.readFile('public/entries.json', (err, data) => {
       if (err) reject(err)
@@ -206,7 +210,8 @@ webhookServer.on('ContentManagement.Entry.unpublish', req => {
       resolve(data)
     })
   })
-})
+  eventEmitter.emit('unpublished', req.body)
+}))
 
 function cleanup () {
   console.log(` Bye .`)
@@ -221,7 +226,13 @@ process.on('SIGHUP', cleanup)
 
 io.on('connection', socket => {
   socket.emit('server', { msg: 'ping' })
-  socket.on('client', data => {
-    console.log(data)
-  })
+  socket.on('client', data => console.log(data))
+
+  eventEmitter.on('published', (entry =>
+    socket.emit('server', {published : entry})
+  ))
+
+  eventEmitter.on('unpublished', (entry =>
+    socket.emit('server', {unpublished: entry})
+  ))
 })
