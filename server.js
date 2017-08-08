@@ -188,28 +188,32 @@ const eventEmitter = new EventEmitter()
 
 
 webhookServer.on('ContentManagement.Entry.publish', (req => {
-  return new Promise((resolve, reject) => {
-    fs.readFile('public/entries.json', (err, data) => {
-      if (err) reject(err)
-      let obj = JSON.parse(data)
-      obj.push(req.body)
-      writeFile('public/entries.json', obj)
-      resolve(data)
+  if (isProd) {
+    return new Promise((resolve, reject) => {
+      fs.readFile('public/entries.json', (err, data) => {
+        if (err) reject(err)
+        let obj = JSON.parse(data)
+        obj.push(req.body)
+        writeFile('public/entries.json', obj)
+        resolve(data)
+      })
     })
-  })
+  }
   eventEmitter.emit('published', req.body)
 }))
 
 webhookServer.on('ContentManagement.Entry.unpublish', (req => {
-  return new Promise((resolve, reject) => {
-    fs.readFile('public/entries.json', (err, data) => {
-      if (err) reject(err)
-      let obj = JSON.parse(data)
-      remove(obj, e => e.sys.id === req.body.sys.id)
-      writeFile('public/entries.json', obj)
-      resolve(data)
+  if (isProd) {
+    return new Promise((resolve, reject) => {
+      fs.readFile('public/entries.json', (err, data) => {
+        if (err) reject(err)
+        let obj = JSON.parse(data)
+        remove(obj, e => e.sys.id === req.body.sys.id)
+        writeFile('public/entries.json', obj)
+        resolve(data)
+      })
     })
-  })
+  }
   eventEmitter.emit('unpublished', req.body)
 }))
 
