@@ -46,13 +46,16 @@ export default {
     }
   },
 
-    methods: {
-      asterix  (refName) {
-        const element = this.$refs[refName]
-        const top = element.offsetTop
-        window.scrollTo(0, top)
-      }
+  methods: {
+    asterix  (refName) {
+      const element = this.$refs[refName]
+      const top = element.offsetTop
+      window.scrollTo(0, top)
     }
+  },
+  asyncData ({ store }) {
+    return store.dispatch('notes')
+  }
 }
 </script>
 

@@ -18,9 +18,6 @@ export default context => {
     if (fullPath !== url) {
       reject({ url: fullPath })
     }
-    if (context.notes) {
-      store.state.notes = context.notes
-    }
     // set router's location
     router.push(url)
 

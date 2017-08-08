@@ -41,6 +41,7 @@ module.exports = {
           name: '[name].[ext]?[hash]'
         }
       },
+      // {test: /\.json$/, loader: 'json-loader'},
       {
         test: /\.css$/,
         use: isProd

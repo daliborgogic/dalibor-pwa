@@ -34,13 +34,13 @@ export default {
     return {
       title: this.post.title,
       description: this.post.description,
-      card: this.post.card
+      card: ''//this.post.card
     }
   },
 
   computed: {
     post () {
-      return this.$store.state.note[0]
+      return this.$store.state.note
     },
 
     share: {

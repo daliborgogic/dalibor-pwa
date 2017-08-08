@@ -120,8 +120,8 @@ function render (req, res) {
     }
   }
 
-  fs.readFile('public/entries.json', 'utf-8', (err, data) => {
-    if (err) console.log(err)
+
+
     const context = {
       title: '###',
       description: '####',
@@ -129,21 +129,8 @@ function render (req, res) {
       url: req.url
     }
 
-    let entries = JSON.parse(data)
-    let lang = 'en-US'
 
-    context.notes = entries.map(note => {
-      return  {
-        id: note.sys.id,
-        createdAt: note.sys.createdAt,
-        title:  note.fields.title[lang],
-        slug: note.fields.slug[lang],
-        description: note.fields.description[lang],
-        category: note.fields.category[lang],
-        card: note.fields.card[lang].fields.file[lang].url,
-        content: note.fields.content[lang]
-      }
-    })
+
 
     // console.log(context.notes)
 
@@ -159,8 +146,25 @@ function render (req, res) {
         console.log(`whole request: ${Date.now() - s}ms`)
       }
     })
-  })
+
 }
+
+app.get('/api/home', (req, res) => {
+
+  return fs.readFile('public/entries.json', 'utf-8', (err, data) => {
+    if (err) console.log(err)
+      const entries = JSON.parse(data)
+      const home = entries.map(note => {
+        return {
+          title: note.fields.title['en-US'],
+          slug: note.fields.slug['en-US'],
+          createdAt: note.sys.createdAt
+        }
+      })
+      res.json(home)
+  })
+
+})
 
 app.get('*', isProd ? render : (req, res) =>
   readyPromise.then(() => render(req, res))
