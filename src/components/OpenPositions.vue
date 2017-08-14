@@ -1,6 +1,6 @@
 <template lang="pug">
 .positions
-  h2.h2 Open positions
+  h2.h2 OPEN POSITIONS
   p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore nihil itaque adipisci modi eveniet eius voluptates iusto sint, id doloribus.
   ul
     li Accessibility

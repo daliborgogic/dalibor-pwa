@@ -6,8 +6,10 @@
   ul
     li(v-for="n, index in notes" key="index")
       router-link(:to="'/notes/'+n.slug")
-        h2(v-html="highlight(n.title, search)")
+        h2.notes-title(v-html="highlight(n.title, search)")
         time {{n.createdAt |timeAgo}} ago
+    li(v-if="notes.length === 0")
+      h2.notes-title Nothing found.
       //- .category
       //-   router-link(:to="'/tags/'+n.category") {{n.category}}
   app-about
@@ -61,13 +63,8 @@ export default {
 </script>
 
 <style lang="stylus">
-.fade-enter-active, .fade-leave-active
-  transition all .2s ease
-.fade-enter, .fade-leave-active
-  opacity 0
 .highlight
   background-color yellow
-  color black
 .search input
   height 36px
   padding 0
@@ -79,21 +76,27 @@ export default {
   &:focus
     outline none
     border-color black
+.notes-title
+  margin-top 0
+  flex 1
+  font-weight normal
+  text-transform uppercase
+  font-size 18px
+  line-height 1
+  word-break break-all
 .notes
   ul
-    padding-left 0
+    padding 0 0 3rem 0
     list-style none
     a
       display flex
       align-items baseline
       text-decoration none
-      h2
-        margin-top 0
-        flex 1
-        font-weight normal
-        font-size 18px
+      color #bd10e0
+
       time
         font-size 13px
+        color lightness(black, 56%)
   .category
     padding-bottom 3rem
     a

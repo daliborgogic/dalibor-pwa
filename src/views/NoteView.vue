@@ -83,9 +83,11 @@ export default {
     border-radius 2px
     font-size 14px
     text-decoration none
+    text-transform uppercase
     line-height 30px
     display inline-block
     transition transform 250ms ease-in
+    color #bd10e0
     &:focus
       transform scale(.9)
 

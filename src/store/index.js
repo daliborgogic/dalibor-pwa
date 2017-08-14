@@ -13,7 +13,8 @@ export function createStore () {
       latests: '',
       notes: '',
       note: '',
-      title: '',
+      tagTitle: '',
+      tag: '',
       msg: 'New post.',
       tag: '',
       results: ''

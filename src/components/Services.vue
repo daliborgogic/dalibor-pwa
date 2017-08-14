@@ -1,6 +1,6 @@
 <template lang="pug">
 .services
-  h2.h2 Services
+  h2.h2 SERVICES
   p API Design – Distributed Infrastructures – Web Apps
   .right
     router-link.button(to="/about") What else?
@@ -11,14 +11,10 @@
   padding-bottom 6rem
 .button
   height 36px
-  border 1px solid
-  padding 0 1rem
   display inline-block
   text-decoration none
-  line-height 34px
-  border-radius 2px
-  background-color black
-  color white
+  text-transform uppercase
+  color #bd10e0
 .right
   display flex
   a

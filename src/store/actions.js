@@ -43,6 +43,7 @@ export default {
           return _.category === tag
         })
         commit('TAG', t)
+        commit('TAG_TITLE', tag)
       })
       .catch(err => console.error(err))
   },

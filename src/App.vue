@@ -11,10 +11,11 @@
       router-link(to="/notes") Notes
       router-link(to="/about") About
   main
-    transition(name="fade" mode="out-in",  appear, @after-leave="afterLeave", @after-enter="afterLeave")
+    transition(name="fade" mode="out-in",  appear, @after-enter="afterLeave")
       //-transition(name="fade" mode="out-in")
       router-view.view
   app-footer
+  app-contact
   snack-bar(:snackbar="msg" :activeSnackbar="activeSnackbar")
 </template>
 
@@ -22,10 +23,12 @@
 import io from 'socket.io-client'
 const AppFooter = () => import(/* webpackChunkName: "dlbr-footer" */ '@/components/Footer.vue')
 const SnackBar = () => import(/* webpackChunkName: "dlbr-snackbar" */ '@/components/snackbar.vue')
+const AppContact = () => import(/* webpackChunkName: "dlbr-cta-contact" */ '@/components/contact.vue')
 export default {
 
   components: {
     AppFooter,
+    AppContact,
     SnackBar
   },
 
@@ -80,7 +83,7 @@ export default {
 </script>
 
 <style lang="stylus">
-//*{background-color: rgba(0,0,0,.1)}
+// *{background-color: rgba(0,0,0,.1)}
 #app
   position relative
 html
@@ -103,7 +106,7 @@ html
 
 html
 body
-  height 100%
+  min-height 100%
 
 body
   font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
@@ -130,7 +133,7 @@ p
 
 .view
   max-width 512px
-  margin 12% auto 0 25vw
+  margin 12% auto 0 auto
   position relative
 
 .fade-enter-active
@@ -172,18 +175,20 @@ nav
   display inline-block
 h1
 .h2
+.h1
   font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
   margin-top 0
   line-height .9
   word-break break-all
   text-transform uppercase
+  font-weight 300
 h1
+.h1
   font-size 5.3em
   margin-bottom 0
   padding-bottom 6rem
-  font-weight 300
 .h2
-  font-family -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
+  font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
   text-transform inherit
   font-size 1rem
   margin-bottom 1rem
