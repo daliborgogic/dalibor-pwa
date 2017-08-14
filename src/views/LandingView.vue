@@ -1,8 +1,8 @@
 <template lang="pug">
 .home
-  div(@click="asterix('asterix')")
-    app-intro
-  app-card
+
+  app-intro
+  //-app-card
   app-services
   h3.h2 Latest posts
   ul.list-notes
@@ -12,7 +12,6 @@
         h3 {{n.title}}
         time(:date-time="n.createdAt") {{n.createdAt | timeAgo}} ago
   app-open-positions
-  small(ref="asterix") *Minification (also minimisation or minimization) in computer programming languages and especially JavaScript, is the process of removing all unnecessary characters from source code without changing its functionality.
 
 </template>
 
@@ -46,13 +45,7 @@ export default {
     }
   },
 
-  methods: {
-    asterix  (refName) {
-      const element = this.$refs[refName]
-      const top = element.offsetTop
-      window.scrollTo(0, top)
-    }
-  },
+
   asyncData ({ store }) {
     return store.dispatch('latests')
   }

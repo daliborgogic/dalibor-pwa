@@ -10,7 +10,7 @@
       router-link(to="/notes") Notes
       router-link(to="/about") About
   main
-    transition(name="fade" mode="out-in"  appear, @after-leave="afterLeave")
+    transition(name="fade" mode="out-in",  appear, @after-leave="afterLeave", @after-enter="afterLeave")
       router-view.view
   app-footer
 </template>
@@ -139,7 +139,8 @@ h1
   text-transform uppercase
 h1
   font-size 5.3em
-  margin-bottom 6rem
+  margin-bottom 0
+  padding-bottom 6rem
 .h2
   font-family -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
   text-transform inherit

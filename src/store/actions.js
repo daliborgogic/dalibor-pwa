@@ -12,25 +12,12 @@ export default {
   },
 
   note: ({commit, state}, {note}) => {
-    // return fetch('http://localhost:5000/entries.json')
-    //   .then(res => { return res.json() })
-    //   .then(json => {
-    //     const n = json.map(note => {
-    //       return {
-    //         title: note.fields.title['en-US'],
-    //         slug: note.fields.slug['en-US'],
-    //         content: marked(note.fields.content['en-US']),
-    //         category: note.fields.category['en-US'],
-    //         card: note.fields.card['en-US'].fields.file['en-US'].url,
-    //         createdAt: note.sys.createdAt
-    //       }
-    //     })
-    //     const na = n.filter(_ => {
-    //       return _.slug === note
-    //     })
-    //     commit('NOTE', na)
-    //   })
-    //   .catch(err => console.error(err))
+    return fetch(`http://localhost:5000/api/posts/${note}`)
+      .then(res => { return res.json() })
+      .then(json => {
+        commit('NOTE', json)
+      })
+      .catch(err => console.error(err))
 
   },
 

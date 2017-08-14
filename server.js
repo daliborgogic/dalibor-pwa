@@ -161,6 +161,29 @@ app.get('/api/posts/latests', (req, res) => {
   })
 })
 
+app.get('/api/posts/:slug', (req, res) => {
+  return fs.readFile('public/entries.json', 'utf-8', (err, data) => {
+    if (err) console.log(err)
+    const entries = JSON.parse(data)
+    const slug = req.params.slug
+    console.log('Slug is: ', slug)
+    const n = entries.map(note => {
+       return {
+         title: note.fields.title['en-US'],
+         slug: note.fields.slug['en-US'],
+         content: note.fields.content['en-US'],
+         category: note.fields.category['en-US'],
+         card: note.fields.card['en-US'].fields.file['en-US'].url,
+         createdAt: note.sys.createdAt
+       }
+     })
+     const post = n.filter(_ => {
+       return _.slug === slug
+     })
+    res.json(post)
+  })
+})
+
 app.get('*', isProd ? render : (req, res) =>
   readyPromise.then(() => render(req, res))
 )
