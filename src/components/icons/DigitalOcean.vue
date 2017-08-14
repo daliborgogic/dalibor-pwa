@@ -4,9 +4,3 @@ svg.icon(xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="65.2 173.5 
   polygon(fill="#C0C0C0" points="155.3,317.6 121.3,317.6 121.3,283.6 121.3,283.6 155.3,283.6 155.3,283.6")
   polygon(fill="#C0C0C0" points="121.3,343.8 95.1,343.8 95.1,343.8 95.1,317.6 121.3,317.6")
 </template>
-
-<script>
-export default {
-  name: 'icon-digital-ocean'
-}
-</script>

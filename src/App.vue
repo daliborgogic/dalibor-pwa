@@ -6,21 +6,33 @@
         path(d="M0 0h24v24H0z" fill="none")
         path(v-if="this.$route.path !== '/'" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z")
       router-link( to="/" exact) daliborgogic.com
+      a(href="https://github.com/daliborgogic/dlbr-pwa" rel="noopener, nofollow") src
     div
       router-link(to="/notes") Notes
       router-link(to="/about") About
   main
     transition(name="fade" mode="out-in",  appear, @after-leave="afterLeave", @after-enter="afterLeave")
+      //-transition(name="fade" mode="out-in")
       router-view.view
   app-footer
+  snack-bar(:snackbar="msg" :activeSnackbar="activeSnackbar")
 </template>
 
 <script>
 import io from 'socket.io-client'
 const AppFooter = () => import(/* webpackChunkName: "dlbr-footer" */ '@/components/Footer.vue')
+const SnackBar = () => import(/* webpackChunkName: "dlbr-snackbar" */ '@/components/snackbar.vue')
 export default {
+
   components: {
-    AppFooter
+    AppFooter,
+    SnackBar
+  },
+
+  data () {
+    return {
+      activeSnackbar: false
+    }
   },
 
   methods: {
@@ -29,21 +41,48 @@ export default {
     },
     back () {
       this.$router.go(-1)
+    },
+    clearMsg () {
+      return setTimeout(_ => this.$store.dispatch('msg', ''), 3000)
     }
   },
+
+  computed: {
+    msg () {
+      return this.$store.state.msg
+    }
+  },
+
   mounted () {
-    //[...document.all].map(A=>A.style.outline=`1px solid hsl(${(A+A).length*9},99%,50%`)
     const socket = io.connect('http://localhost:5000')
       socket.on('server', data => {
-        console.log(data)
-        socket.emit('client', { msg: 'pong' })
-    });
+        const key = Object.keys(data).toString()
+        switch (key) {
+          case 'msg':
+            this.$store.dispatch('msg', key)
+            break
+          case 'unpublished':
+            this.$store.dispatch('unpublished')
+            this.$store.dispatch('msg', 'Unpublished post')
+            setTimeout(_ => this.$store.dispatch('msg', ''), 3000)
+            break
+          case 'published':
+            this.$store.dispatch('published')
+            this.$store.dispatch('msg', 'Published post')
+            break
+          default:
+            console.log(`We are out of ${key}.`)
+            return
+        }
+    })
   }
 }
 </script>
 
 <style lang="stylus">
 //*{background-color: rgba(0,0,0,.1)}
+#app
+  position relative
 html
   font-family sans-serif
   font-size 16px
@@ -67,11 +106,12 @@ body
   height 100%
 
 body
-  font-family -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
+  font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
+  // -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
   font-size 1rem
   font-weight normal
   text-rendering geometricPrecision
-  line-height 1.5
+  line-height 1.6
   color lightness(black, 13%)
   background-color white
   margin 0
@@ -90,7 +130,7 @@ p
 
 .view
   max-width 512px
-  margin 15% auto 0 auto
+  margin 12% auto 0 25vw
   position relative
 
 .fade-enter-active
@@ -102,7 +142,7 @@ p
   opacity 0
 nav
   position fixed
-  background-color white
+  background-color transparent
   width 100%
   top 0
   left 0
@@ -141,6 +181,7 @@ h1
   font-size 5.3em
   margin-bottom 0
   padding-bottom 6rem
+  font-weight 300
 .h2
   font-family -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
   text-transform inherit

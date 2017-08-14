@@ -2,6 +2,9 @@ import Vue from 'vue'
 
 export default {
   LATESTS: (state, m) => state.latests = m,
+  NOTES: (state, m) => state.notes = m,
   NOTE: (state, m) => state.note = m[0],
-  TAG: (state, m) => state.tag =  m
+  MSG: (state, m) => state.msg = m,
+  TAG: (state, m) => state.tag =  m,
+  SEARCH: (state, m) => state.results = m
 }

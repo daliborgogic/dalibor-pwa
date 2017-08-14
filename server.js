@@ -146,18 +146,36 @@ function render (req, res) {
 
 }
 
+const lang = 'en-US'
+
 app.get('/api/posts/latests', (req, res) => {
   return fs.readFile('public/entries.json', 'utf-8', (err, data) => {
     if (err) console.log(err)
-    const entries = JSON.parse(data)
-    const home = entries.map(note => {
+    const entries = JSON.parse(data).slice(0, 3)
+    const latest = entries.map(note => {
       return {
-        title: note.fields.title['en-US'],
-        slug: note.fields.slug['en-US'],
+        title: note.fields.title[lang],
+        slug: note.fields.slug[lang],
         createdAt: note.sys.createdAt
       }
     })
-    res.json(home)
+    res.json(latest)
+  })
+})
+
+app.get('/api/posts', (req, res) => {
+  return fs.readFile('public/entries.json', 'utf-8', (err, data) => {
+    if (err) console.log(err)
+    const entries = JSON.parse(data)
+    const notes = entries.map(note => {
+      return {
+        title: note.fields.title[lang],
+        slug: note.fields.slug[lang],
+        category: note.fields.category[lang],
+        createdAt: note.sys.createdAt
+      }
+    })
+    res.json(notes)
   })
 })
 
@@ -169,11 +187,12 @@ app.get('/api/posts/:slug', (req, res) => {
     console.log('Slug is: ', slug)
     const n = entries.map(note => {
        return {
-         title: note.fields.title['en-US'],
-         slug: note.fields.slug['en-US'],
-         content: note.fields.content['en-US'],
-         category: note.fields.category['en-US'],
-         card: note.fields.card['en-US'].fields.file['en-US'].url,
+         id: note.sys.id,
+         title: note.fields.title[lang],
+         slug: note.fields.slug[lang],
+         content: note.fields.content[lang],
+         category: note.fields.category[lang],
+         card: note.fields.card[lang].fields.file['en-US'].url,
          createdAt: note.sys.createdAt
        }
      })
@@ -252,7 +271,6 @@ process.on('SIGHUP', cleanup)
 
 
 io.on('connection', socket => {
-  socket.emit('server', { msg: 'ping' })
   socket.on('client', data => console.log(data))
 
   eventEmitter.on('published', (entry =>

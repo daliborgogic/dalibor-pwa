@@ -14,7 +14,9 @@ export function createStore () {
       notes: '',
       note: '',
       title: '',
-      tag: ''
+      msg: 'New post.',
+      tag: '',
+      results: ''
     },
     actions,
     mutations,

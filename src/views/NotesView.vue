@@ -1,16 +1,20 @@
 <template lang="pug">
 .notes
   h1 Notes
+  .search
+    input(v-model="search" placeholder="Search" @keyup="find()")
   ul
     li(v-for="n, index in notes" key="index")
       router-link(:to="'/notes/'+n.slug")
-        h2 {{n.title}}
+        h2(v-html="highlight(n.title, search)")
         time {{n.createdAt |timeAgo}} ago
       //- .category
       //-   router-link(:to="'/tags/'+n.category") {{n.category}}
+  app-about
 </template>
 
 <script>
+const AppAbout = () => import(/* webpackChunkName: "dlbr-note" */ '@/components/About.vue')
 export default {
   name: 'notes-view',
 
@@ -22,6 +26,16 @@ export default {
     }
   },
 
+  data () {
+    return {
+      search: ''
+    }
+  },
+
+  components: {
+    AppAbout
+  },
+
   computed: {
     notes() {
       return this.$store.state.notes
@@ -30,11 +44,41 @@ export default {
 
   asyncData ({ store }) {
     return store.dispatch('notes')
+  },
+  methods: {
+    find () {
+      this.$store.dispatch('search', this.search)
+    },
+
+    highlight (word, query) {
+      query = new RegExp(query, 'ig')
+      return word.toString().replace(query, (txt => {
+        return `<span class="highlight\">${txt}</span>`
+      }))
+    }
   }
 }
 </script>
 
 <style lang="stylus">
+.fade-enter-active, .fade-leave-active
+  transition all .2s ease
+.fade-enter, .fade-leave-active
+  opacity 0
+.highlight
+  background-color yellow
+  color black
+.search input
+  height 36px
+  padding 0
+  margin-bottom 3rem
+  border-radius 2px
+  border none
+  border-bottom 1px solid lightness(black, 80%)
+  width 100%
+  &:focus
+    outline none
+    border-color black
 .notes
   ul
     padding-left 0

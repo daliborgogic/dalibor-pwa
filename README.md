@@ -27,7 +27,7 @@ $ npm start
 # To test locally run:
 $ curl -X POST \
   -u username:password \
-  --header "X-Contentful-Topic: ContentManagement.Entry.publish" \
+  --header "X-Contentful-Topic: ContentManagement.Entry.unpublish" \
   --data "test=data" \
   localhost:5000
 ```

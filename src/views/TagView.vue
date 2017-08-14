@@ -1,6 +1,6 @@
 <template lang="pug">
 .notes
-  h1 {{this.$store.state.title}}
+  //-h1 {{this.$store.state.title}}
   div(v-if="tag.length === 0") Nothing found
   div(v-else)
     ul
