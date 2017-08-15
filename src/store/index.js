@@ -17,7 +17,8 @@ export function createStore () {
       tag: '',
       msg: 'New post.',
       tag: '',
-      results: ''
+      results: '',
+      resource: ''
     },
     actions,
     mutations,

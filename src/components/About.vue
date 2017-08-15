@@ -1,7 +1,6 @@
 <template lang="pug">
 .cabout
   router-link(to="/about")
-    //-logo
     div
       h3 About
       p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -9,13 +8,8 @@
 </template>
 
 <script>
-const logo = () => import('@/components/icons/logo.vue')
-
 export default {
-  name: 'dlbr-about',
-  components: {
-    logo
-  }
+  name: 'dlbr-about'
 }
 </script>
 

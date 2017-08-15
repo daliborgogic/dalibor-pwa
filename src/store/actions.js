@@ -6,6 +6,10 @@ export default {
     commit('MSG', data)
   },
 
+  resource: ({commit, context}, data) => {
+    commit('RESOURCE', data)
+  },
+
   unpublished: ({dispatch}) => {
     dispatch('latests')
   },

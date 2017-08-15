@@ -15,7 +15,7 @@ export default {
   left 1rem
   // left 50%
   //transform translate(-50%, 0)
-  transition transform 250ms cubic-bezier(.17,.67,.83,.67)
+  transition transform 250ms ease-out
   transform translateY(100px)
   bottom 1rem
   z-index 10
@@ -30,4 +30,12 @@ export default {
   font-size 14px
   &.active
     transform translateY(0)
+@media (max-width: 512px)
+ .snackbar
+   left 0
+   bottom auto
+   top 0
+   width 100%
+   transform translateY(-60px)
+   border-radius 0
 </style>

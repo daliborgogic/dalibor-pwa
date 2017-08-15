@@ -58,9 +58,9 @@ export default {
         }
         return `http://twitter.com/share?text=${tweet.text}&url=https://daliborgogic.com${tweet.url + tweet.hashtags}`
       },
+
       set: function (val) {
         return val
-
       }
     }
   },

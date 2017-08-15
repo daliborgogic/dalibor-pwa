@@ -1,17 +1,19 @@
 <template lang="pug">
 .home
-  app-intro
-  ul.list-notes
-    li(v-for="n, index in latests")
-      router-link(:to="'/notes/'+n.slug")
-        //-img(v-if="index === 1" :src="n.card")
-        h3 {{n.title}}
-        time(:date-time="n.createdAt") {{dateFormat(n.createdAt, 'mmm dS yyyy')}}
-  app-services
-  app-open-positions.space3
-  app-about
-  share()
-
+  .view
+    app-intro
+  resource
+  .view
+    ul.list-notes
+      li(v-for="n, index in latests")
+        router-link(:to="'/notes/'+n.slug")
+          //-img(v-if="index === 1" :src="n.card")
+          h3 {{n.title}}
+          time(:date-time="n.createdAt") {{dateFormat(n.createdAt, 'mmm dS yyyy')}}
+    app-services
+    app-open-positions.space3
+    app-about
+    share()
 </template>
 
 <script>
@@ -20,6 +22,7 @@ const AppOpenPositions = () => import(/* webpackChunkName: "dlbr-positions" */ '
 const AppServices = () => import(/* webpackChunkName: "dlbr-services" */ '@/components/Services.vue')
 const share = () => import(/* webpackChunkName: "dlbr-share" */ '@/components/share.vue')
 const AppAbout = () => import(/* webpackChunkName: "dlbr-share" */ '@/components/About.vue')
+const resource = () => import(/* webpackChunkName: "dlbr-resource" */ '@/components/resource.vue')
 
 export default {
   name: 'landing-view',
@@ -29,7 +32,8 @@ export default {
     AppOpenPositions,
     AppServices,
     share,
-    AppAbout
+    AppAbout,
+    resource
   },
 
   meta () {

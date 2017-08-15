@@ -19,7 +19,7 @@ a.cta-contact(href="mailto:mail@daliborgogic.com?subject=Hello" rel="noopener, n
   position fixed
   right 3rem
   bottom 3rem
-  box-shadow 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+  // box-shadow 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
   transition transform 250ms ease-out
   &:active
     transform scale(.9)
@@ -27,5 +27,10 @@ a.cta-contact(href="mailto:mail@daliborgogic.com?subject=Hello" rel="noopener, n
 @media (max-width: 512px)
   .cta-contact
     right 1rem
-    bottom 1rem
+    bottom -28px
+    z-index 11
+    transform translateY(-56px)
+    transition transform 250ms ease-out
+  &.active
+    transform translateY(0)
 </style>

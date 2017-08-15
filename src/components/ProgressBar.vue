@@ -93,5 +93,9 @@ export default {
   width 0
   transition width 250ms, opacity 0.4s
   opacity 1
-  z-index 999999
+  z-index 10
+@media (max-width: 512px)
+  .progress
+    top auto
+    bottom 56px
 </style>

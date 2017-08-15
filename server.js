@@ -268,8 +268,35 @@ process.on('SIGINT', cleanup)
 process.on('SIGTERM', cleanup)
 process.on('SIGHUP', cleanup)
 
+const os = require('os')
+
+
 
 io.on('connection', socket => {
+
+  const load = os.loadavg()[0]
+  const totalMemory = os.totalmem()
+  const freeMemory = os.freemem()
+  const usedMemory = Number((totalMemory - freeMemory) / 1073741824).toFixed(4)
+
+//   socket.emit('server', { resource: { cpu: load, memory: usedMemory }})
+//     setInterval(() => {
+//    return new Promise((resolve, reject) => {
+//   fs.readFile('public/resource.json', (err, data) => {
+//     if (err) reject(err)
+//     let obj = JSON.parse(data)
+//       let load = os.loadavg()[0]
+//       let freeMemory = os.freemem()
+//       let usedMemory = Number((totalMemory - freeMemory) / 1073741824).toFixed(4)
+//       obj.push({ "cpu": load.toString(), "memory": usedMemory.toString() })
+//       writeFile('public/resource.json', obj)
+//       socket.emit('server', { resource: { cpu: load, memory: usedMemory }})
+//     resolve(data)
+//   })
+// })
+//     }, 1000)
+
+
   socket.on('client', data => console.log(data))
 
   eventEmitter.on('published', (entry =>

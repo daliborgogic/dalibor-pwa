@@ -1,48 +1,41 @@
 <template lang="pug">
 #app
-  nav
+  nav(ref="nav" v-bind:class="{navUp: showNav}")
     div
-      logo.logo(v-if="this.$route.path === '/'")
-      svg(v-else @click="back" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg")
-        path(d="M0 0h24v24H0z" fill="none")
-        path(v-if="this.$route.path !== '/'" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z")
       router-link( to="/" exact) daliborgogic.com
-      span (#[a(href="https://github.com/daliborgogic/dlbr-pwa" rel="noopener, nofollow") src])
-    div
-      router-link(to="/notes") Notes
+      //-a.ml(href="https://github.com/daliborgogic/dlbr-pwa" rel="noopener, nofollow") src
+      //-router-link(to="/notes") Notes
+    //-div
   main
     transition(name="fade" mode="out-in",  @after-enter="afterLeave")
       //-transition(name="fade" mode="out-in")
-      router-view.view
+      router-view
   app-contact
   snack-bar(:snackbar="msg" :activeSnackbar="activeSnackbar")
 </template>
 
 <script>
 import io from 'socket.io-client'
-const logo = () => import(/* webpackChunkName: "dlbr-logo" */ '@/components/icons/logo.vue')
+
 const SnackBar = () => import(/* webpackChunkName: "dlbr-snackbar" */ '@/components/snackbar.vue')
 const AppContact = () => import(/* webpackChunkName: "dlbr-cta-contact" */ '@/components/contact.vue')
 export default {
 
   components: {
     AppContact,
-    SnackBar,
-    logo
+    SnackBar
   },
 
   data () {
     return {
-      activeSnackbar: false
+      activeSnackbar: false,
+      showNav: false
     }
   },
 
   methods: {
     afterLeave (el) {
       window.scroll(0, 0)
-    },
-    back () {
-      this.$router.go(-1)
     },
     clearMsg () {
       return setTimeout(_ => this.$store.dispatch('msg', ''), 3000)
@@ -60,6 +53,9 @@ export default {
       socket.on('server', data => {
         const key = Object.keys(data).toString()
         switch (key) {
+          case 'resource':
+            this.$store.dispatch('resource', data[key])
+            break
           case 'msg':
             this.$store.dispatch('msg', key)
             break
@@ -77,6 +73,22 @@ export default {
             return
         }
     })
+
+    let a = 0
+
+    window.addEventListener('scroll', () => {
+      var b = window.pageYOffset
+      var c = this.$refs.nav
+      var i = /iPad|iPhone|iPod/i.test(navigator.userAgent)
+      if (b > a && !i) {
+        // down
+        this.showNav = true
+      } else {
+        // up
+        this.showNav = false
+      }
+      a = b
+    }, false)
   }
 }
 </script>
@@ -137,7 +149,7 @@ a
 
 .view
   max-width 512px
-  margin 12% auto 0 auto
+  margin 0 auto
   position relative
 
 .fade-enter-active
@@ -150,7 +162,7 @@ a
 
 nav
   position fixed
-  background-color transparent
+  background-color white
   width 100%
   top 0
   left 0
@@ -158,22 +170,19 @@ nav
   display flex
   align-items center
   justify-content space-between
-  padding 0 2rem 0 1rem
+  padding 0 2rem
   z-index 2
+  transition all 250ms ease-out
+  &.navUp
+    top -64px
   svg
     fill $brandColor
     margin-right 1rem
   div
     display flex
     align-items center
-    span
-      padding-left 1rem
-      font-size 18px
-      font-weight 500
-  span
   a
     color lightness(black, 46%)
-  a
     text-decoration none
     font-size 14px
     &.router-link-active
@@ -205,23 +214,31 @@ h1
   text-transform inherit
   font-size 1rem
   margin-bottom 1rem
-
+.ml
+  margin-left 1rem
 @media (max-width: 512px)
+  body
+    padding-top 1rem
   .view
     margin-top 1rem
     padding-left 1rem
     padding-right 1rem
   nav
-    div
-      width 100%
-    a:last-of-type
-      position absolute
-      right 0
-      background-color white
-    a:first-of-type
-      padding-left 0
+    border-top 1px solid rgba(black, .12)
+    top auto
+    height 56px
+    background-color white
+    bottom 0
+    padding-left 1rem
+    padding-right 1rem
+    &.navUp
+      top auto
+      bottom -56px
   h1
     font-size 13.8vw
+  .h1
+  h1
+    padding-bottom 3rem
   // ul
   //   li
   //     list-style-position inside
