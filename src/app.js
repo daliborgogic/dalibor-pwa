@@ -4,21 +4,29 @@ import { createStore } from '@/store'
 import { createRouter } from '@/router'
 import { sync } from 'vuex-router-sync'
 import metaMixin from '@/util/meta'
-//import marked from 'marked'
+import marked from 'marked'
 import * as filters from '@/util/filters'
+import dateFormat from 'dateformat'
 
-// marked.setOptions({
-//   sanitize: true
-// })
+marked.setOptions({
+  sanitize: true
+})
 
 Vue.mixin(metaMixin)
-// Vue.mixin({
-//   methods: {
-//     marked (input) {
-//       return marked(input)
-//     }
-//   }
-// });
+Vue.mixin({
+  methods: {
+    marked (input) {
+      return marked(input)
+    },
+    dateFormat (date, format) {
+      return dateFormat(date, format)
+    },
+    camelize (str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    }
+  }
+})
+
 
 
 // register global utility filters.

@@ -46,21 +46,5 @@ export default {
         commit('TAG_TITLE', tag)
       })
       .catch(err => console.error(err))
-  },
-
-  search: ({commit}, data) => {
-    return fetch('http://localhost:5000/api/posts')
-      .then(res => { return res.json() })
-      .then(notes => {
-          if (data === '') {
-            commit('NOTES', notes)
-          } else {
-            const results = notes.filter(note => {
-              return note.title.toLowerCase().includes(data.toLowerCase())
-             })
-             commit('NOTES', results)
-          }
-      })
-      .catch(err => console.error(err))
   }
 }

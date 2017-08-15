@@ -1,34 +1,35 @@
 <template lang="pug">
 .home
-
   app-intro
-  //-app-card
-  app-services
-  h3.h2 Latest posts
   ul.list-notes
     li(v-for="n, index in latests")
       router-link(:to="'/notes/'+n.slug")
-        //- img(v-if="index === 1" :src="n.card")
+        //-img(v-if="index === 1" :src="n.card")
         h3 {{n.title}}
-        time(:date-time="n.createdAt") {{n.createdAt | timeAgo}} ago
-  app-open-positions
+        time(:date-time="n.createdAt") {{dateFormat(n.createdAt, 'mmm dS yyyy')}}
+  app-services
+  app-open-positions.space3
+  app-about
+  share()
 
 </template>
 
 <script>
 const AppIntro = () => import(/* webpackChunkName: "dlbr-intro" */ '@/components/Intro.vue')
-const AppCard = () => import(/* webpackChunkName: "dlbr-card" */ '@/components/Card.vue')
 const AppOpenPositions = () => import(/* webpackChunkName: "dlbr-positions" */ '@/components/OpenPositions.vue')
 const AppServices = () => import(/* webpackChunkName: "dlbr-services" */ '@/components/Services.vue')
+const share = () => import(/* webpackChunkName: "dlbr-share" */ '@/components/share.vue')
+const AppAbout = () => import(/* webpackChunkName: "dlbr-share" */ '@/components/About.vue')
 
 export default {
   name: 'landing-view',
 
   components: {
     AppIntro,
-    AppCard,
     AppOpenPositions,
-    AppServices
+    AppServices,
+    share,
+    AppAbout
   },
 
   meta () {
@@ -53,6 +54,8 @@ export default {
 </script>
 
 <style lang="stylus">
+.space3
+  padding-bottom 3rem
 time
   font-size 13px
   color lightness(black, 46%)
@@ -81,11 +84,7 @@ time
   ul
     padding-left 0
     margin-top 0
-    //-list-style none
   li
-    //border 1px solid lightness(black, 74%)
-    // border-radius 2px
-    // box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     a
       text-decoration none
       display flex
@@ -94,11 +93,11 @@ time
         flex 1
         margin-top 0
         line-height 1
-        font-size 1rem // rem?
-        font-weight normal
-        // text-transform uppercase
+        font-size 1rem
+        font-weight 700
         word-break break-all
-        color #bd10e0//#49fb35
+        text-transform uppercase
+        color $brandColor
         padding-right 1rem
         //font-family Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
 </style>

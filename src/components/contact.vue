@@ -6,10 +6,11 @@ a.cta-contact(href="mailto:mail@daliborgogic.com?subject=Hello" rel="noopener, n
 </template>
 
 <style lang="stylus">
+@import "../variables.styl"
 .cta-contact
   width 56px
   height 56px
-  background-color black
+  background-color $brandColor
   border-radius 50%
   display flex
   color white
@@ -19,4 +20,12 @@ a.cta-contact(href="mailto:mail@daliborgogic.com?subject=Hello" rel="noopener, n
   right 3rem
   bottom 3rem
   box-shadow 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+  transition transform 250ms ease-out
+  &:active
+    transform scale(.9)
+
+@media (max-width: 512px)
+  .cta-contact
+    right 1rem
+    bottom 1rem
 </style>

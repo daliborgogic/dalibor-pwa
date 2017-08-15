@@ -184,7 +184,6 @@ app.get('/api/posts/:slug', (req, res) => {
     if (err) console.log(err)
     const entries = JSON.parse(data)
     const slug = req.params.slug
-    console.log('Slug is: ', slug)
     const n = entries.map(note => {
        return {
          id: note.sys.id,

@@ -9,4 +9,7 @@
   padding-bottom 6rem
   h1
     padding-bottom 3rem
+  small
+    color lightness(black, 56%)
+    display inline-block
 </style>

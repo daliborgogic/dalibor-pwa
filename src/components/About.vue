@@ -1,21 +1,26 @@
 <template lang="pug">
 .cabout
   router-link(to="/about")
-    logo
+    //-logo
     div
-      h3 Dalibor Gogic
+      h3 About
       p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
 </template>
 
 <script>
-const Logo = () => import('@/components/icons/logo.vue')
+const logo = () => import('@/components/icons/logo.vue')
+
 export default {
   name: 'dlbr-about',
-  components: {Logo}
+  components: {
+    logo
+  }
 }
 </script>
 
 <style lang="stylus">
+@import "../variables"
 .cabout
   padding-bottom 6rem
   a
@@ -30,7 +35,9 @@ export default {
       font-size 13px
       margin-top 0
     h3
-      font-size 14px
+      font-size 1rem
+      text-transform uppercase
+      color $brandColor
       margin-top 0
       margin-bottom 0
   img

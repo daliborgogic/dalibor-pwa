@@ -1,9 +1,7 @@
 <template lang="pug">
 .services
-  h2.h2 SERVICES
+  h2.label SERVICES
   p API Design – Distributed Infrastructures – Web Apps
-  .right
-    router-link.button(to="/about") What else?
 </template>
 
 <style lang="stylus">
@@ -15,8 +13,5 @@
   text-decoration none
   text-transform uppercase
   color #bd10e0
-.right
-  display flex
-  a
-    margin-left auto
+  font-weight 700
 </style>

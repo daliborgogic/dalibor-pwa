@@ -2,8 +2,9 @@
 .note
   //- img(:src="n.card+'?w=600&fm=jpg&q=80'")
   h1 {{post.title}}
-  time(:date-time="post.createdAt") {{post.createdAt | timeAgo}} ago
-  .content(v-html="post.content")
+  //- https://www.npmjs.com/package/dateformat
+  time(:date-time="post.createdAt") {{dateFormat(post.createdAt, 'dddd, mmmm dS yyyy')}}
+  .content(v-html="marked(post.content)")
   .category
     router-link(:to="'/tags/'+post.category") {{post.category | camelize}}
   .share
@@ -67,11 +68,14 @@ export default {
   asyncData ({ store, route: {params: {note}} }) {
     return store.dispatch('note', {note})
   }
-
 }
 </script>
 
 <style lang="stylus">
+@import "../variables"
+blockquote
+  margin 2rem
+  font-size .75rem
 .category
   padding-bottom 3rem
   a
@@ -87,7 +91,7 @@ export default {
     line-height 30px
     display inline-block
     transition transform 250ms ease-in
-    color #bd10e0
+    color $brandColor
     &:focus
       transform scale(.9)
 
@@ -95,28 +99,47 @@ time
   padding-bottom 1rem
   display block
   font-size 13px
+  color lightness(black, 56%)
 .content
   padding-bottom 3rem
+  h1
+  h2
+  h3
+    font-size 1.1rem
+    font-weight 700
+    margin-top 0
+    margin-bottom 1rem
+    text-transform uppercase
+    // display: inline-block;
+    // font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto", "Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans", "Helvetica Neue",sans-serif;
+    // font-size: 24px;
+    // font-weight: normal;
+    // margin: 0;
+    // overflow: auto;
   ul
+  ol
     padding-left 0
-  // list-style none
+    margin 2rem 0
+  ul
+    list-style none
+    li
+      border-bottom 1px solid lightness(black, 80%)
+      min-height 48px
+      display flex
+      align-items center
+      font-size .75rem
 img
-  max-width calc(100% + 6rem)
-  max-width 100%
+  width 100%
   height auto
   vertical-align middle
-  // margin-left -3rem
-  // margin-right -3rem
 pre
-  margin-top 3rem
-  margin-bottom 3rem
-  // margin-left -10rem
-  // margin-right -10rem
-  // width calc(100% + 20rem)
+  margin-top 2rem
+  margin-bottom 2rem
   font-size .75rem
   //white-space pre-wrap
   word-break break-word
   overflow-x auto
+  //color $brandColor
 .share
   display flex
   padding-bottom 3rem
